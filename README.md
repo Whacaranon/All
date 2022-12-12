@@ -2094,17 +2094,16 @@ end)
 
 spawn(function()
         pcall(function()
-            while wait() do
+            game:GetService("RunService").Stepped:Connect(function()
                 if noclip then
-                if not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
-                        Noclip.Name = "BodyClip"
-                        local Noclip = Instance.new("BodyVelocity")
-                        Noclip.Parent = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
-                        Noclip.Velocity = Vector3.new(0,0,0)
+                 for _, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                        if v:IsA("BasePart") then
+                            v.CanCollide = false    
+                        end
                     end
-                    end
-            end
+                end
+            end)
         end)
     end)
-                
+    
 return Blacklib
