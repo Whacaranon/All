@@ -1828,6 +1828,7 @@ local RenUi = Update:AddWindow("STEAL",Enum.KeyCode.RightControl)
 local A = RenUi:AddTab("• Main", "8825667942")
 local P = RenUi:AddTab("• Player", nil)
 local M = RenUi:AddTab("• Miss", nil)
+local S = RenUi:AddTab("* ตกแต่ง", nil)
 
 Time = A:AddLabel("Server Time")
 
@@ -1881,6 +1882,11 @@ end)
 
 A:AddButton("Copy CFreme", function()
 setclipboard(tostring(game.Players.LocalPlayer.Character.HumanoidRootPart.Position))
+end)
+
+
+A:AddButton("Copy iTem", function()
+setclipboard(tostring(game.Players.LocalPlayer.Name))
 end)
 
 A:AddButton("Remote Spy", function()
@@ -1991,8 +1997,12 @@ A:AddButton("Unlock FPS",function(a)
         end
     end
     
-    local SelectWeaponply = P:Dropdown("Select Weapon",Weaponply,function(value)
+    local SelectWeaponply = P:AddDropdown("Select Weapon",Weaponply,function(value)
         _G.SelectWeaponKill = value
+    end)
+    
+    P:AddButton("Copy name item",function()
+        setclipboard(tostring(_G.SelectWeaponKill))
     end)
     
     P:AddButton("Refresh Weapon",function()
@@ -2042,4 +2052,103 @@ spawn(function()
                 end
             end)
         end)
+end)
+
+function UpdateEspPlayer()
+        if ESPPlayer then
+            for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+                if not isnil(v.Character) then
+                    if not v.Character.Head:FindFirstChild('NameEsp'..v.Name) then
+                        local BillboardGui = Instance.new("BillboardGui")
+                        local ESP = Instance.new("TextLabel")
+                        local HealthESP = Instance.new("TextLabel")
+                        BillboardGui.Parent = v.Character.Head
+                        BillboardGui.Name = 'NameEsp'..v.Name
+                        BillboardGui.ExtentsOffset = Vector3.new(0, 1, 0)
+                        BillboardGui.Size = UDim2.new(1,200,1,30)
+                        BillboardGui.Adornee = v.Character.Head
+                        BillboardGui.AlwaysOnTop = true
+                        ESP.Name = "ESP"
+                        ESP.Parent = BillboardGui
+                        ESP.TextTransparency = 0
+                        ESP.BackgroundTransparency = 1
+                        ESP.Size = UDim2.new(0, 200, 0, 30)
+                        ESP.Position = UDim2.new(0,25,0,0)
+                        ESP.Font = Enum.Font.Gotham
+                        ESP.Text = (v.Name ..' '.."[ "..round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Character.Head.Position).Magnitude/3) ..' M'.." ]")
+                        if v.Team == game:GetService("Players").LocalPlayer.Team then
+                            ESP.TextColor3 = Color3.new(0, 255, 255)
+                        else
+                            ESP.TextColor3 = Color3.new(255, 0, 0)
+                        end
+                        ESP.TextSize = 14
+                        ESP.TextStrokeTransparency = 0.500
+                        ESP.TextWrapped = true
+                        HealthESP.Name = "HealthESP"
+                        HealthESP.Parent = ESP
+                        HealthESP.TextTransparency = 0
+                        HealthESP.BackgroundTransparency = 1
+                        HealthESP.Position = ESP.Position + UDim2.new(0, -25, 0, 15)
+                        HealthESP.Size = UDim2.new(0, 200, 0, 30)
+                        HealthESP.Font = Enum.Font.Gotham
+                        HealthESP.TextColor3 = Color3.fromRGB(255, 0, 0)
+                        HealthESP.TextSize = 14
+                        HealthESP.TextStrokeTransparency = 0.500
+                        HealthESP.TextWrapped = true
+                        HealthESP.Text = "Health "..math.floor(v.Character.Humanoid.Health).."/"..math.floor(v.Character.Humanoid.MaxHealth)
+                    else
+                        v.Character.Head['NameEsp'..v.Name].ESP.Text = (v.Name ..' '..round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Character.Head.Position).Magnitude/3) ..' M')
+                        v.Character.Head['NameEsp'..v.Name].ESP.HealthESP.Text = "Health "..math.floor(v.Character.Humanoid.Health).."/"..math.floor(v.Character.Humanoid.MaxHealth)
+                        v.Character.Head:FindFirstChild('NameEsp'..v.Name).ESP.TextTransparency = 0
+                        v.Character.Head:FindFirstChild('NameEsp'..v.Name).ESP.HealthESP.TextTransparency = 0
+                    end
+                end
+            end
+        else
+            for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+                if v.Character.Head:FindFirstChild('NameEsp'..v.Name) then
+                    v.Character.Head:FindFirstChild('NameEsp'..v.Name).ESP.TextTransparency = 1
+                    v.Character.Head:FindFirstChild('NameEsp'..v.Name).ESP.HealthESP.TextTransparency = 1
+                end
+            end
+        end     
+    end
+
+M:AddToggle("ESP Player",false,function(value)
+        ESPPlayer = value
+        while ESPPlayer do wait()
+            UpdateEspPlayer()
+        end
     end)
+
+S:AddButton("Korblox",function()
+	local ply = game.Players.LocalPlayer
+	local chr = ply.Character
+	chr.RightLowerLeg.MeshId = "902942093"
+	chr.RightLowerLeg.Transparency = "1"
+	chr.RightUpperLeg.MeshId = "http://www.roblox.com/asset/?id=902942096"
+	chr.RightUpperLeg.TextureID = "http://roblox.com/asset/?id=902843398"
+	chr.RightFoot.MeshId = "902942089"
+	chr.RightFoot.Transparency = "1"
+	end)
+
+S:AddButton("Violet Valkyrie",function()
+	local ply = game.Players.LocalPlayer
+	local chr = ply.Character
+	chr.RightLowerLeg.MeshId = "1402432199"
+	chr.RightLowerLeg.Transparency = "1"
+	chr.RightUpperLeg.MeshId = "http://www.roblox.com/asset/?id=1402432199"
+	chr.RightUpperLeg.TextureID = "http://roblox.com/asset/?id=1402432199"
+	chr.RightFoot.MeshId = "1402432199"
+	chr.RightFoot.Transparency = "1"
+	end)
+
+S:AddButton("Headless",function()
+	game.Players.LocalPlayer.Character.Head.Transparency = 1
+	game.Players.LocalPlayer.Character.Head.Transparency = 1
+	for i,v in pairs(game.Players.LocalPlayer.Character.Head:GetChildren()) do
+		if (v:IsA("Decal")) then
+			v.Transparency = 1
+		end
+	end
+end)
